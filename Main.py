@@ -18,14 +18,16 @@ def main():
                     usuario_controller.ver_usuario()
                 case 4:
                     print("Hello World")
+                case 5:
+                    print("Hello World")
                 case 6:
                     usuario_controller.sair()
                     break
                 case _:
-                    print("Opção inválida. Tente novamente.")
+                    input("\033[31mOpção inválida. Tente novamente\033[0m.")
                     
         except ValueError:
-             print("Digite um número válido!")
+             input("\033[31mDigite um número válido!\033[0m")
 
 
 if __name__ == "__main__":

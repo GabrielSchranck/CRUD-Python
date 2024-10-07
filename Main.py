@@ -1,9 +1,9 @@
-from Controller.Usuario_service import Usuario_Service
+from Controller.Usuario_controller import Usuario_controller
 
 def main():
-    usuario_service = Usuario_Service()
+    usuario_controller = Usuario_controller()
     while True:
-        usuario_service.chama_menu()
+        usuario_controller.chama_menu()
         opcoes = input("Escolha uma opção: ")
 
         try:
@@ -11,15 +11,15 @@ def main():
         
             match opcoes:
                 case 1:
-                    usuario_service.cadastrar_usuario_service()
+                    usuario_controller.cadastrar_usuario_service()
                 case 2:
-                    usuario_service.ver_usuarios()
+                    usuario_controller.ver_usuarios()
                 case 3:
-                    usuario_service.ver_usuario()
+                    usuario_controller.ver_usuario()
                 case 4:
                     print("Hello World")
                 case 6:
-                    print("\033[31mSaindo...\033[0m")
+                    usuario_controller.sair()
                     break
                 case _:
                     print("Opção inválida. Tente novamente.")

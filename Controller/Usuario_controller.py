@@ -1,70 +1,38 @@
-from Model.Objects.Usuario import Usuario
 from View.MenuView import MenuView
+from Service.Usuario_service import Usuario_Service
 from Model.Repositories.UsuarioRepository import UsuarioRepository
 
 class Usuario_controller():
     def __init__(self):
-        self.usuarios = []
-        self.proximo_id = 1
-        self.inicia_lista_usuarios()
+        self.service = Usuario_Service()
 
-    def inicia_lista_usuarios(self):
-        usuarioRepository = UsuarioRepository()
-        self.usuarios = usuarioRepository.seleciona_todos_usuarios()
-
-        for usuario in self.usuarios:
-            self.proximo_id += 1
-
-    def cadastrar_usuario(self, nome, idade, email, cpf, curso):
-        usuario = Usuario(self.proximo_id, nome, idade, email, cpf, curso)
-        self.usuarios.append(usuario)
-        self.proximo_id += 1
-        return usuario
+    def chama_menu(self):
+        MenuView.limpar_console()
+        MenuView.exibe_menu()
     
-    def ler_dados_cadastro(self):
-        while True:
-            nome = input("Digite seu nome: ")
-            if not nome.isalpha():
-                print("Digite um nome válido!")
-                MenuView.limpar_console()
-                continue
+    def cadastrar_usuario_service(self):
+        MenuView.limpar_console()
+        usuarioRepository = UsuarioRepository()
 
-            idade = input("Digite sua idade: ") 
-            if not idade.isdigit():
-                print("Digite uma idade válida!")
-                MenuView.limpar_console()
-                continue
+        if usuarioRepository.criar_usuario(self.service.cadastrar_usuario(*self.service.ler_dados_cadastro())):
+            MenuView.limpar_console()
+            print("\033[33mUsuário cadastrado com sucesso\033[0m")
+            input("\033[32mPressione Enter para continuar...\033[0m")
+        else:
+            print("\033[31mErro ao cadastrar usuário\033[0m")
+            input("\033[32mPressione Enter para continuar...\033[0m")
+    
+    def ver_usuarios(self):
+        MenuView.limpar_console()
+        MenuView.exibe_usuarios_cadastrados(self.service.usuarios)
+        input("\033[32mPressione Enter para continuar...\033[0m")
+        MenuView.limpar_console()
+    
+    def ver_usuario(self):
+        MenuView.limpar_console()
+        self.service.mostra_usuario(input("\033[34mInsira o nome do usuário:\033[0m "))
+        input("\033[32mPressione Enter para continuar...\033[0m")
 
-            email = input("Digite seu email: ")
-            if "@" not in email or "." not in email.split("@")[-1]:
-                print("Você deve digitar um email válido!")
-                MenuView.limpar_console()
-                continue
-
-            cpf = input("Digite seu cpf: ")
-            if not cpf.isdigit() or len(cpf) != 11:
-                print("Digite um cpf válido!")
-                MenuView.limpar_console()
-                continue
-
-            curso = input("Digite seu curso: ")
-            if not curso:
-                print("O curso não pode ser vazio!")
-                MenuView.limpar_console()
-                continue
-
-            return nome, idade, email, cpf, curso
-
-    def mostra_usuario(self, pesquisa):
-        naoEncontrado = False
-        for usuario in self.usuarios:
-            if usuario.nome == pesquisa:
-                MenuView.exibe_usuario(usuario)
-            else:
-                naoEncontrado = True
-
-        if naoEncontrado:
-            print("\033[31mUsuário não encontrado")
-
-    # def alterar_usuario(self, usuario):        
-        
+    def sair(self):
+        MenuView.limpar_console()
+        print("\033[31mSaindo...\033[0m")

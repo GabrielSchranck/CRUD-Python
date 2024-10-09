@@ -56,13 +56,13 @@ class Usuario_Service():
             return nome, idade, email, cpf, curso
 
     def mostra_usuario(self, pesquisa):
-        naoEncontrado = False
+        usuarios_encontrados = []
         for usuario in self.usuarios:
             if usuario.nome == pesquisa:
-                MenuView.exibe_usuario(usuario)
-            else:
-                naoEncontrado = True
-
-        if naoEncontrado:
-            print("\033[31mUsuário não encontrado")   
+                usuarios_encontrados.append(usuario)
+        if not usuarios_encontrados:
+            print("\033[31mUsuário não encontrado") 
+        else:
+            for usuario in usuarios_encontrados:
+                MenuView.exibe_usuario(usuario)  
         
